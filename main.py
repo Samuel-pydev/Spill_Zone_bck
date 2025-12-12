@@ -24,6 +24,19 @@ app.include_router(auth_router)
 app.include_router(feed_router)
 app.include_router(messages_router)
 
+from sqlalchemy import text
+
+@app.get("/migrate")
+def migrate_database(db: Session = Depends(get_db)):
+    try:
+        # Add user_id column to feed_posts
+        db.execute(text("ALTER TABLE feed_posts ADD COLUMN user_id INTEGER REFERENCES users(id)"))
+        db.commit()
+        return {"status": "Migration completed successfully"}
+    except Exception as e:
+        db.rollback()
+        return {"status": "Migration failed", "error": str(e)}
+
 @app.get("/")
 def root():
     return {"message": "SPILLZONE API is running"}
