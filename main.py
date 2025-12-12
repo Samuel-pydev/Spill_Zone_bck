@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-from database import engine, Base
+from database import engine, Base, get_db  
 from routes import auth_router, feed_router, messages_router
 from database import engine, Base
 # Create tables
@@ -24,7 +24,7 @@ app.include_router(auth_router)
 app.include_router(feed_router)
 app.include_router(messages_router)
 
-from sqlalchemy import text
+from sqlalchemy import text, Session
 
 @app.get("/migrate")
 def migrate_database(db: Session = Depends(get_db)):
