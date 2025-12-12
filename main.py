@@ -24,7 +24,8 @@ app.include_router(auth_router)
 app.include_router(feed_router)
 app.include_router(messages_router)
 
-from sqlalchemy import text, Session
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 @app.get("/migrate")
 def migrate_database(db: Session = Depends(get_db)):
