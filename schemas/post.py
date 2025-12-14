@@ -1,6 +1,6 @@
 from pydantic import BaseModel, field_validator
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 
 class FeedPostCreate(BaseModel):
     text: str
@@ -18,6 +18,8 @@ class FeedPostResponse(BaseModel):
     user_id: Optional[int] = None
     text: str
     timestamp: datetime
+    reaction_counts: Dict[str, int] = {}  # ADD THIS
+    user_reactions: list[str] = []  # ADD THIS
     
     class Config:
         from_attributes = True
